@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pangek</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            overflow: hidden;
+            color: white;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            position: relative;
+            height: 100vh;
+            background: url('image.png') no-repeat center center fixed;
+            background-size: cover;
+            transition: background 1s ease-in-out;
+        }
+        .container {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            opacity: 0;
+            animation: fadeIn 1s forwards;
+        }
+        .menu {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 20;
+        }
+        .menu a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+        }
+        .menu a:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        .lang-btn {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+            padding: 10px;
+        }
+        .hidden { display: none; }
+        .nfc-button {
+            margin: 10px;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .nfc-button:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        /* Анимация для плавных переходов */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Эффект следования за курсором */
+        .cursor-follow {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            animation: cursorFollow 0.1s ease-out;
+        }
+
+        @keyframes cursorFollow {
+            0% { transform: translate(-50%, -50%) scale(0); }
+            100% { transform: translate(-50%, -50%) scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <div class="cursor-follow" id="cursor"></div> <!-- Курсор -->
+
+    <div class="menu">
+        <div>
+            <a href="#" onclick="showPage('home')" id="home-link">Главная</a>
+            <a href="#" onclick="showPage('nfc')" id="nfc-link">NFC sndtag</a>
+        </div>
+        <button class="lang-btn" onclick="toggleLanguage()">EN</button>
+    </div>
+    
+    <div id="home" class="container">
+        <h1>Pangek</h1>
+        <p id="home-text">Добро пожаловать на сайт!</p>
+    </div>
+    
+    <div id="nfc" class="container hidden">
+        <h1>NFC sndtag</h1>
+        <p id="nfc-text">Раздел с пранковыми ссылками</p>
+        <button class="nfc-button" onclick="openLink('https://baribok.github.io/sndtags.github.io/')" id="nfc-btn1">Юбу юбу бабульку</button>
+        <button class="nfc-button" onclick="copyLink('https://baribok.github.io/sndtags.github.io/')" id="copy-btn1">Скопировать ссылку</button>
+        <button class="nfc-button" onclick="openLink('https://baribok.github.io/soundtag.home.github.io/')" id="nfc-btn2">Умаем панта элеканта</button>
+        <button class="nfc-button" onclick="copyLink('https://baribok.github.io/soundtag.home.github.io/')" id="copy-btn2">Скопировать ссылку</button>
+    </div>
+    
+    <script>
+        function showPage(page) {
+            document.getElementById('home').classList.add('hidden');
+            document.getElementById('nfc').classList.add('hidden');
+            document.getElementById(page).classList.remove('hidden');
+        }
+        
+        function toggleLanguage() {
+            const langBtn = document.querySelector('.lang-btn');
+            if (document.documentElement.lang === 'ru') {
+                document.documentElement.lang = 'en';
+                langBtn.textContent = 'RU';
+                document.getElementById('home-text').textContent = 'Welcome to the website!';
+                document.getElementById('nfc-text').textContent = 'Section with prank links';
+                document.getElementById('home-link').textContent = 'Home';
+                document.getElementById('nfc-link').textContent = 'NFC sndtag';
+                document.getElementById('nfc-btn1').textContent = 'Yubu Yubu Babushka';
+                document.getElementById('copy-btn1').textContent = 'Copy Link';
+                document.getElementById('nfc-btn2').textContent = 'Umaem Panta Elekanta';
+                document.getElementById('copy-btn2').textContent = 'Copy Link';
+            } else {
+                document.documentElement.lang = 'ru';
+                langBtn.textContent = 'EN';
+                document.getElementById('home-text').textContent = 'Добро пожаловать на сайт!';
+                document.getElementById('nfc-text').textContent = 'Раздел с пранковыми ссылками';
+                document.getElementById('home-link').textContent = 'Главная';
+                document.getElementById('nfc-link').textContent = 'NFC sndtag';
+                document.getElementById('nfc-btn1').textContent = 'Юбу юбу бабульку';
+                document.getElementById('copy-btn1').textContent = 'Скопировать ссылку';
+                document.getElementById('nfc-btn2').textContent = 'Умаем панта элеканта';
+                document.getElementById('copy-btn2').textContent = 'Скопировать ссылку';
+            }
+        }
+        
+        function openLink(url) {
+            window.open(url, '_blank');
+        }
+        
+        function copyLink(url) {
+            navigator.clipboard.writeText(url).then(() => {
+                alert('Ссылка скопирована!');
+            });
+        }
+
+        // Эффект для курсора
+        document.addEventListener("mousemove", (e) => {
+            const cursor = document.getElementById('cursor');
+            cursor.style.left = `${e.pageX}px`;
+            cursor.style.top = `${e.pageY}px`;
+        });
+    </script>
+</body>
+</html>
